@@ -6,25 +6,25 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label="Описание",widget=CKEditorUploadingWidget())
+    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
 
     class Meta:
         model = Movie
         fields = '__all__'
 
-# @admin.register(Category)
+
 class CategoryAdmin(admin.ModelAdmin):
     """Категория"""
-    list_display = ("id", "name", "url")  # отображаемые поля
-    list_display_links = ("name",)  # поле ссылка
+    list_display = ("id", "name", "url")
+    list_display_links = ("name",)
 
 
-# class ReviewInline(admin.StackedInline): # при открытии фильма все отывы к нему
 class ReviewInline(admin.TabularInline):  # выстраиваются по горизонтали
     """Отзывы на странице фильма"""
     model = Review
-    extra = 1  # количество доп полей
+    extra = 1
     readonly_fields = ("name", "email")
+
 
 class MovieShotsInline(admin.TabularInline):
     model = MovieShots
@@ -37,6 +37,7 @@ class MovieShotsInline(admin.TabularInline):
 
     get_image.short_description = "Изображение"
 
+
 class MovieAdmin(admin.ModelAdmin):
     """Фильмы"""
     list_display = ("title", "category", "url", "draft")
@@ -46,35 +47,35 @@ class MovieAdmin(admin.ModelAdmin):
     save_on_top = True  # меню сохранить вверху
     save_as = True  # кнопка сохранить как новый объект
     list_editable = ("draft",)  # поле для редактирования из панели
-    actions = ["publish", "unpublish"] # действия в админ панели
+    actions = ["publish", "unpublish"]  # действия в админ панели
     form = MovieAdminForm
     readonly_fields = ("get_image",)
     # fields = (
     # ("actors", "directors", "genres"),)  # групировка в одну строку (поля которые отобоажаются)
     fieldsets = (
         (None, {
-            "fields": (("title", "tagline"),)  # группировка в одну строку
+            "fields": (("title", "tagline"),)
         }),
         (None, {
-            "fields": ("description", ("poster", "get_image"))  # группировка в одну строку
+            "fields": ("description", ("poster", "get_image"))
         }),
         (None, {
-            "fields": (("year", "world_premiere", "country"),)  # группировка в одну строку
+            "fields": (("year", "world_premiere", "country"),)
         }),
         ("Actors", {
             "classes": ("collapse",),  # свернутая группа
-            "fields": (("actors", "directors", "genres", "category"),)  # группировка в одну строку
+            "fields": (("actors", "directors", "genres", "category"),)
         }),
         (None, {
-            "fields": (("budget", "fees_in_usa", "fees_in_word"),)  # группировка в одну строку
+            "fields": (("budget", "fees_in_usa", "fees_in_word"),)
         }),
         ("Options", {
-            "fields": (("url", "draft"),)  # группировка в одну строку + ИМЯ группы
+            "fields": (("url", "draft"),)
         }),
 
     )
 
-    def get_image(self, obj):  # вывод изображения
+    def get_image(self, obj):
         if obj.poster:
             return mark_safe(f'<img src={obj.poster.url} width="100" height="80"')
 
@@ -97,12 +98,13 @@ class MovieAdmin(admin.ModelAdmin):
         self.message_user(request, f'{message_bit}')
 
     publish.short_description = "Опубликовать"
-    publish.allowed_permissions = ('change',) # права доступа
+    publish.allowed_permissions = ('change',)  # права доступа
 
     unpublish.short_description = "Снять с публикации"
     unpublish.allowed_permissions = ('change',)
 
     get_image.short_description = "Постер"
+
 
 class ReviewsAdmin(admin.ModelAdmin):
     """Отзывы"""
@@ -120,7 +122,7 @@ class ActorAdmin(admin.ModelAdmin):
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image",)
 
-    def get_image(self, obj):  # вывод изображения
+    def get_image(self, obj):
         if obj.image:
             return mark_safe(f'<img src={obj.image.url} width="60" height="40"')
 
