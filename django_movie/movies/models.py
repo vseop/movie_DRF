@@ -1,7 +1,10 @@
 from django.db import models
 from datetime import date
-
+from django.contrib.auth import get_user_model
 from django.urls import reverse
+
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -19,7 +22,7 @@ class Category(models.Model):
 
 
 class Actor(models.Model):
-    """Актеры и режисcеры"""
+    """Актеры и режиcсеры"""
     name = models.CharField('Имя', max_length=100)
     age = models.PositiveSmallIntegerField('Возраст', default=0)
     description = models.TextField('Описание')
@@ -134,9 +137,10 @@ class Rating(models.Model):
 
 
 class Review(models.Model):
-    """Отзывы"""
-    email = models.EmailField()
-    name = models.CharField('Имя', max_length=100)
+    """Отзыв"""
+    # email = models.EmailField()
+    # name = models.CharField('Имя', max_length=100)
+    author = models.ForeignKey(User, verbose_name='Автор', related_name='related_reviews', on_delete=models.CASCADE)
     text = models.TextField('Сообщение', max_length=5000)
     parent = models.ForeignKey(
         'self', verbose_name='Родитель', on_delete=models.SET_NULL, blank=True, null=True,
@@ -146,7 +150,7 @@ class Review(models.Model):
                               related_name="reviews")
 
     def __str__(self):
-        return f'{self.name} - {self.movie}'
+        return f'{self.author} - {self.movie}'
 
     class Meta:
         verbose_name = 'Отзыв'

@@ -23,7 +23,7 @@ class ReviewInline(admin.TabularInline):  # выстраиваются по го
     """Отзывы на странице фильма"""
     model = Review
     extra = 1
-    readonly_fields = ("name", "email")
+    readonly_fields = ("author",)
 
 
 class MovieShotsInline(admin.TabularInline):
@@ -108,8 +108,8 @@ class MovieAdmin(admin.ModelAdmin):
 
 class ReviewsAdmin(admin.ModelAdmin):
     """Отзывы"""
-    list_display = ("name", "email", "parent", "movie", "id")
-    readonly_fields = ("name", "email")  # сокрыть от редактирования
+    list_display = ("author", "parent", "movie", "id")
+
 
 
 class GenreAdmin(admin.ModelAdmin):

@@ -3,27 +3,13 @@ from rest_framework import serializers
 from .models import Movie, Review, Rating, Actor
 
 
-class FilterReviewListSerializer(serializers.ListSerializer):
-    """Фильтр комментариев только parents"""
-
-    def to_representation(self, data):
-        data = data.filter(parent=None)
-        return super().to_representation(data)
-
-
-class RecursiveSerializer(serializers.Serializer):
-    """Вывод рекурсивно children"""
-
-    def to_representation(self, value):
-        serializer = self.parent.parent.__class__(value, context=self.context)
-        return serializer.data
-
 class ActorListSerializer(serializers.ModelSerializer):
     """Вывод списка актеров и режиссеров"""
 
     class Meta:
         model = Actor
         fields = ("id", "name", "image")
+
 
 class ActorDetailSerializer(serializers.ModelSerializer):
     """Вывод полного описания актера или режиссера"""
@@ -43,8 +29,25 @@ class MovieListSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "tagline", "category", "rating_user", "middle_star")
 
 
+class FilterReviewListSerializer(serializers.ListSerializer):
+    """Фильтр комментариев только parents"""
+
+    def to_representation(self, data):
+        data = data.filter(parent=None)
+        return super().to_representation(data)
+
+
+class RecursiveSerializer(serializers.Serializer):
+    """Вывод рекурсивно children"""
+
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
 class ReviewCreateSerializer(serializers.ModelSerializer):
     """Добавление отзыва"""
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         model = Review
@@ -59,7 +62,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         list_serializer_class = FilterReviewListSerializer
         model = Review
-        fields = ("name", "text", "children")
+        fields = ("id", "author", "text", "children")
 
 
 class MovieDetailSerializer(serializers.ModelSerializer):
