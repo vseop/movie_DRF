@@ -44,14 +44,13 @@ class MovieAdmin(admin.ModelAdmin):
     list_filter = ("category", "year")
     search_fields = ("title", "category__name")
     inlines = [MovieShotsInline, ReviewInline]
-    save_on_top = True  # меню сохранить вверху
-    save_as = True  # кнопка сохранить как новый объект
-    list_editable = ("draft",)  # поле для редактирования из панели
-    actions = ["publish", "unpublish"]  # действия в админ панели
+    save_on_top = True
+    save_as = True
+    list_editable = ("draft",)
+    actions = ["publish", "unpublish"]
     form = MovieAdminForm
     readonly_fields = ("get_image",)
-    # fields = (
-    # ("actors", "directors", "genres"),)  # групировка в одну строку (поля которые отобоажаются)
+
     fieldsets = (
         (None, {
             "fields": (("title", "tagline"),)
@@ -63,7 +62,7 @@ class MovieAdmin(admin.ModelAdmin):
             "fields": (("year", "world_premiere", "country"),)
         }),
         ("Actors", {
-            "classes": ("collapse",),  # свернутая группа
+            "classes": ("collapse",),
             "fields": (("actors", "directors", "genres", "category"),)
         }),
         (None, {
@@ -140,7 +139,7 @@ class MovieShotsAdmin(admin.ModelAdmin):
 
     readonly_fields = ("get_image",)
 
-    def get_image(self, obj):  # вывод изображения
+    def get_image(self, obj):
         if obj.image:
             return mark_safe(f'<img src={obj.image.url} width="60" height="40"')
 
@@ -156,5 +155,5 @@ admin.site.register(RatingStar)
 admin.site.register(Review, ReviewsAdmin)
 admin.site.register(Rating, RatingAdmin)
 
-admin.site.site_title = "Django Movies"
-admin.site.site_header = "Django Movies"
+admin.site.site_title = "Movies"
+admin.site.site_header = "Movies"
