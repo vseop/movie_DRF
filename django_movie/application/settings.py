@@ -1,5 +1,3 @@
-
-
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -16,7 +14,7 @@ SECRET_KEY = 'django-insecure-b3eu5(*t*1e6iyn3kd1(!9d%#z&l)@jgq2uco9sn(x*x84+=)_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -39,7 +37,6 @@ INSTALLED_APPS = [
     # 'oauth2_provider',
     # 'social_django',
     # 'rest_framework_social_oauth2',
-
 
     'movies',
 
@@ -189,14 +186,14 @@ CKEDITOR_CONFIGS = {
                 'Youtube'
             ]},
         ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar application here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
         # 'height': 291,
         # 'width': '100%',
         # 'filebrowserWindowHeight': 725,
         # 'filebrowserWindowWidth': 940,
         # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?application=TeX-AMS_HTML',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
             'uploadimage',  # the upload image feature
@@ -217,7 +214,6 @@ CKEDITOR_CONFIGS = {
         ]),
     }
 }
-
 
 # SOCIAL_AUTH_VK_OAUTH2_KEY = '7363441'
 # SOCIAL_AUTH_VK_OAUTH2_SECRET = '********************'

@@ -93,3 +93,4 @@ class CreateRatingSerializer(serializers.ModelSerializer):
         )
 
         return rating
+

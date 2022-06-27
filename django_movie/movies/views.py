@@ -24,14 +24,12 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_class = MovieFilter
     pagination_class = PaginationMovies
 
-
     def get_queryset(self):
         movies = Movie.objects.filter(draft=False).annotate(
             rating_user=models.Count("ratings",
                                      filter=models.Q(ratings__ip=get_client_ip(self.request)))
         ).annotate(
             middle_star=(models.Avg("ratings__star"))
-            # middle_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings'))
 
         )
         return movies
@@ -85,6 +83,3 @@ class AddStarRatingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(ip=get_client_ip(self.request))
-
-
-
